@@ -1,9 +1,6 @@
 <html>
   <head>
     <title>SQRL::Check::Web</title>
-    <style>
-      .result .title { font-weight: normal; }
-    </style>
   </head>
   <body>
     <div>
@@ -15,20 +12,11 @@
       </ul>
       <h2>About this test server</h2>
       <p>This service allows you to run a test suite against a publicly accessible SQRL server and view the results online</p>
-      <p><%= results.total_time.round(2) %>s: <%= results.count %> tests, <%= results.failures %> failed, <%= results.errors %> errors, <%= results.skips %> skipped </p>
-      <ul class="results">
-        <% results.results.each do |res| %>
-          <li class="result">
-            <h4 class="title">
-              <em class="class"><%= res.class.name.sub('SQRL::Check::Server::', '') %></em>
-              <strong class="test"><%= res.name.sub('test_', '').tr('_', ' ') %></strong>
-            </h4>
-            <% res.failures.each do |test| %>
-             <pre class="error"><%= Rack::Utils.escape_html(test.to_s) %></pre>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+      <form method="get" action="/results">
+        HTML URL that contains nonced SQRL URL
+        <input type="text" name="target_url"/>
+        <input type="submit" title="run">
+      </form>
     </div>
   </body>
 </html>

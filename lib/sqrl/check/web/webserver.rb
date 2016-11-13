@@ -12,8 +12,12 @@ module SQRL
         end
 
         get '/' do
-          results = Check::Server.run
-          erb :index, :locals => { :results => results }
+          erb :index
+        end
+
+        get '/results' do
+          results = Check::Server.run(:target_url => params[:target_url])
+          erb :results, :locals => { :target_url => params[:target_url], :results => results }
         end
       end
     end
