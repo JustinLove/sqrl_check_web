@@ -12,7 +12,8 @@ module SQRL
         end
 
         get '/' do
-          erb :index
+          results = Check::Server.run
+          erb :index, :locals => { :results => results }
         end
       end
     end
