@@ -16,8 +16,14 @@ module SQRL
         end
 
         get '/results' do
-          results = Check::Server.run(:target_url => params[:target_url])
-          erb :results, :locals => { :target_url => params[:target_url], :results => results }
+          results = Check::Server.run(
+            :target_url => params[:target_url],
+            :signed_cert => !!params[:signed_cert]
+          )
+          erb :results, :locals => {
+            :target_url => params[:target_url],
+            :results => results
+          }
         end
       end
     end

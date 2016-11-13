@@ -13,9 +13,19 @@
       <h2>About this test server</h2>
       <p>This service allows you to run a test suite against a publicly accessible SQRL server and view the results online</p>
       <form method="get" action="/results">
-        HTML URL that contains nonced SQRL URL
-        <input type="text" name="target_url"/>
-        <input type="submit" title="run">
+        <div>
+          <label for="target_url">
+            HTML URL that contains nonced SQRL URL<br/>
+            <input type="text" size="40" id="target_url" name="target_url" placeholder="https://"/>
+          </label>
+        </div>
+        <div>
+          <label for="signed_cert">
+            <input type="checkbox" id="signed_cert" name="signed_cert"/>
+            Check TLS certificate signing chain
+          </label>
+        </div>
+        <input type="submit" value="Run">
       </form>
     </div>
   </body>
