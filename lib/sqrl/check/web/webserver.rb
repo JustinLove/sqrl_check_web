@@ -1,5 +1,7 @@
 require 'sqrl/check/server'
+require 'sqrl/check/web/serialize_reporter'
 require 'sinatra/base'
+require 'json'
 
 module SQRL
   module Check
@@ -16,10 +18,11 @@ module SQRL
         end
 
         get '/results' do
-          results = Check::Server.run(
+          job = JSON.generate(SerializeReporter.new(Check::Server.run(
             :target_url => params[:target_url],
             :signed_cert => !!params[:signed_cert]
-          )
+          )).to_h)
+          results = JSON.parse(job)
           erb :results, :locals => {
             :target_url => params[:target_url],
             :results => results
