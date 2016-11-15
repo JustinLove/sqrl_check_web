@@ -12,7 +12,7 @@ module SQRL
         def perform(id, options)
           results = Check::Server.run(options)
           ser = JSON.generate(SerializeReporter.new(results).to_h)
-          Sidekiq.redis do |r| r.set("result:#{id}", ser) end
+          Sidekiq.redis do |r| r.setex("result:#{id}", 60*60, ser) end
         end
       end
     end
