@@ -39,6 +39,15 @@ module SQRL
             }
           end
         end
+
+        get '/results/:id/poll' do |id|
+          job = Sidekiq.redis { |r| r.exists("result:#{id}") }
+          if job
+            status 204
+          else
+            status 304
+          end
+        end
       end
     end
   end
