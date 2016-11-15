@@ -28,8 +28,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "sqrl_check"
-  spec.add_runtime_dependency "sinatra"
-  spec.add_runtime_dependency "thin"
+  spec.add_runtime_dependency "sinatra", "~> 1.4"
+  spec.add_runtime_dependency "thin", "~> 1.7"
+  spec.add_runtime_dependency "sidekiq", "~> 4.2"
+  spec.add_runtime_dependency "redis", "~> 3.3"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"

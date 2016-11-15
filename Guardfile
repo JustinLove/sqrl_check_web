@@ -8,3 +8,12 @@ guard 'process',
   watch('Guardfile')
   watch('Procfile')
 end
+
+guard 'process',
+    :name => 'worker',
+    :command => 'foreman start worker' do
+  watch(%r{lib/.+\.rb})
+  watch(%r{../sqrl_check/lib/.+\.rb})
+  watch('Guardfile')
+  watch('Procfile')
+end

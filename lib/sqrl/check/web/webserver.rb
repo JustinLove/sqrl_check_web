@@ -1,5 +1,4 @@
-require 'sqrl/check/server'
-require 'sqrl/check/web/serialize_reporter'
+require 'sqrl/check/web/sidekiq_config'
 require 'sinatra/base'
 require 'json'
 
@@ -17,16 +16,28 @@ module SQRL
           erb :index
         end
 
-        get '/results' do
-          job = JSON.generate(SerializeReporter.new(Check::Server.run(
+        post '/results' do
+          id = SecureRandom.urlsafe_base64
+          TestWorker.perform_async(id, {
             :target_url => params[:target_url],
             :signed_cert => !!params[:signed_cert]
-          )).to_h)
-          results = JSON.parse(job)
-          erb :results, :locals => {
-            :target_url => params[:target_url],
-            :results => results
-          }
+          })
+          redirect to('/results/'+id)
+        end
+
+        get '/results/:id' do |id|
+          job = Sidekiq.redis { |r| r.get("result:#{id}") }
+          if job
+            results = JSON.parse(job)
+            erb :results, :locals => {
+              :target_url => params[:target_url],
+              :results => results
+            }
+          else
+            erb :results_waiting, :locals => {
+              :target_url => params[:target_url],
+            }
+          end
         end
       end
     end
