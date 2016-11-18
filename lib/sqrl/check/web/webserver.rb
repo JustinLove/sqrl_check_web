@@ -44,15 +44,17 @@ module SQRL
               }
             end
           else
+            status 404
             erb :results_missing
           end
         end
 
         get '/results/:id/poll' do |id|
-          if ResultStore.exists?(id)
-            status 204
-          else
+          job = ResultStore.load(id)
+          if job && job['waiting']
             status 304
+          else
+            status 204
           end
         end
       end
