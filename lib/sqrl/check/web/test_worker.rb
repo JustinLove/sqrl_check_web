@@ -1,6 +1,7 @@
 require 'sidekiq'
 require 'sqrl/check/server'
 require 'sqrl/check/web/serialize_reporter'
+require 'sqrl/check/web/result_store'
 require 'json'
 
 module SQRL
@@ -15,8 +16,7 @@ module SQRL
           results = Check::Server.run(options)
           ser = SerializeReporter.new(results).to_h
           ser['target_url'] = options['target_url']
-          text = JSON.generate(ser)
-          Sidekiq.redis do |r| r.setex("result:#{id}", 60*60, text) end
+          ResultStore.save(id, ser)
         end
       end
     end

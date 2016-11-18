@@ -1,4 +1,5 @@
 require 'sqrl/check/web/sidekiq_config'
+require 'sqrl/check/web/result_store'
 require 'sinatra/base'
 require 'json'
 
@@ -18,11 +19,10 @@ module SQRL
 
         post '/results' do
           id = SecureRandom.urlsafe_base64
-          ser = JSON.generate({
+          ResultStore.save(id, {
             'waiting' => true,
             'target_url' => params[:target_url],
           })
-          Sidekiq.redis do |r| r.setex("result:#{id}", 60*60, ser) end
           TestWorker.perform_async(id, {
             :target_url => params[:target_url],
             :signed_cert => !!params[:signed_cert]
@@ -31,9 +31,8 @@ module SQRL
         end
 
         get '/results/:id' do |id|
-          job = Sidekiq.redis { |r| r.get("result:#{id}") }
-          if job
-            results = JSON.parse(job)
+          results = ResultStore.load(id)
+          if results
             if results['waiting']
               erb :results_waiting, :locals => {
                 :target_url => results['target_url'],
@@ -50,8 +49,7 @@ module SQRL
         end
 
         get '/results/:id/poll' do |id|
-          job = Sidekiq.redis { |r| r.exists("result:#{id}") }
-          if job
+          if ResultStore.exists?(id)
             status 204
           else
             status 304
