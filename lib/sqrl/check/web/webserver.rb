@@ -1,5 +1,9 @@
 require 'sqrl/check/web/sidekiq_config'
 require 'sqrl/check/web/result_store'
+require 'sqrl/check/web/pending_session_store'
+require 'sqrl/check/web/sqrl_server'
+require 'sqrl/opaque_nut'
+require 'sqrl/url'
 require 'sinatra/base'
 require 'json'
 
@@ -14,7 +18,15 @@ module SQRL
         end
 
         get '/' do
-          erb :index
+          nut = SQRL::OpaqueNut.new.to_s
+          scheme = request.secure? ? URI::SQRL : URI::QRL
+          auth_url = SQRL::URL.create(scheme,
+            request.host+':'+request.port.to_s+'/sqrl',
+            {:nut => nut, :sfn => 'SQRL::Test'}).to_s
+          PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
+          erb :index, :locals => {
+            :auth_url => auth_url,
+          }
         end
 
         post '/results' do
@@ -56,6 +68,17 @@ module SQRL
           else
             status 204
           end
+        end
+
+        post '/sqrl' do
+          ss = SqrlServer.new(request)
+          ss.execute
+          ss.update_session(session)
+          return ss.response_body
+        end
+
+        def session_id
+          session['id'] ||= SecureRandom.urlsafe_base64
         end
       end
     end
