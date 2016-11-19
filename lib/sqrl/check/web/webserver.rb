@@ -4,6 +4,7 @@ require 'sqrl/check/web/pending_session_store'
 require 'sqrl/check/web/sqrl_server'
 require 'sqrl/opaque_nut'
 require 'sqrl/url'
+require 'sqrl/base64'
 require 'sinatra/base'
 require 'json'
 
@@ -26,6 +27,7 @@ module SQRL
           PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
           erb :index, :locals => {
             :auth_url => auth_url,
+            :current_idk => SQRL::Base64.encode(current_idk),
           }
         end
 
@@ -79,6 +81,10 @@ module SQRL
 
         def session_id
           session['id'] ||= SecureRandom.urlsafe_base64
+        end
+
+        def current_idk
+          session['idk'] ||= PendingSessionStore.pending_idk(session_id)
         end
       end
     end

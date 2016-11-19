@@ -19,6 +19,14 @@ module SQRL
           }
           JSON.parse(session) if session
         end
+
+        def login(sid, idk)
+          Sidekiq.redis do |r| r.setex("login:#{sid}", 60*5, idk) end
+        end
+
+        def pending_idk(sid)
+          Sidekiq.redis { |r| r.get("login:#{sid}") }
+        end
       end
     end
   end
