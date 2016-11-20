@@ -1,11 +1,48 @@
 <html>
   <head>
     <title>SQRL::Check::Web</title>
+    <style type="text/css">
+    table {
+      border-width: 0;
+      border-style: none;
+      border-color: #0000ff;
+      border-collapse: collapse;
+    }
+    td {
+      border-width: 0; 
+      border-style: none;
+      border-color: #0000ff; 
+      border-collapse: collapse; 
+      padding: 0; 
+      margin: 0; 
+      width: 5px; 
+      height: 5px; 
+    }
+    td.black { background-color: #000; }
+    td.white { background-color: #fff; }
+    </style>
   </head>
   <body>
+    <p><%= current_idk %></p>
     <div>
-      <p><%= current_idk %></p>
-      <a href="<%= auth_url %>"><%= auth_url %></a>
+      <a href="<%= auth_url %>">
+      <h2>Login with SQRL</h2>
+      <table>
+      <% qr.modules.each_index do |x| %>
+        <tr>  
+        <% qr.modules.each_index do |y| %>
+         <% if qr.dark?(x,y) %>
+          <td class="black"/>
+         <% else %>
+          <td class="white"/>
+         <% end %>
+        <% end %>
+        </tr>
+      <% end %>
+      </table>
+      </a>
+    </div>
+    <div>
       <h2>About SQRL</h2>
       <p>SQRL (pronounced squirrel) is a proposed authentication (login) method makes logging in as easy as scanning a QR code, while avoiding most of the pitfalls passwords.</p>
       <ul>

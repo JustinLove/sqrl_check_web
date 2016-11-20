@@ -6,6 +6,7 @@ require 'sqrl/opaque_nut'
 require 'sqrl/url'
 require 'sqrl/base64'
 require 'sinatra/base'
+require 'rqrcode'
 require 'json'
 
 module SQRL
@@ -27,6 +28,7 @@ module SQRL
           PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
           erb :index, :locals => {
             :auth_url => auth_url,
+            :qr => RQRCode::QRCode.new(auth_url, :size => 5, :level => :l),
             :current_idk => SQRL::Base64.encode(current_idk),
           }
         end
