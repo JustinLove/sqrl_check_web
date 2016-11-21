@@ -14,6 +14,9 @@ module SQRL
     module Web
       class Webserver < Sinatra::Base
         enable :sessions
+        if ENV['SESSION_SECRET']
+          set :session_secret, ::Base64.decode64(ENV['SESSION_SECRET'])
+        end
 
         configure do 
           STDOUT.sync = true
