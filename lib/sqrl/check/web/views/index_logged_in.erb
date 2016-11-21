@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>SQRL::Check::Web</title>
+  </head>
+  <body>
+    <p><%= current_idk %></p>
+    <div>
+      <form method="post" action="/results">
+        <div>
+          <label for="target_url">
+            HTML URL that contains nonced SQRL URL<br/>
+            <input type="text" size="40" id="target_url" name="target_url" placeholder="https://"/>
+          </label>
+        </div>
+        <div>
+          <label for="signed_cert">
+            <input type="checkbox" id="signed_cert" name="signed_cert"/>
+            Check TLS certificate signing chain
+          </label>
+        </div>
+        <input type="submit" value="Run">
+      </form>
+    </div>
+  </body>
+</html>

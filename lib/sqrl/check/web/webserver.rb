@@ -20,20 +20,31 @@ module SQRL
         end
 
         get '/' do
-          nut = SQRL::OpaqueNut.new.to_s
-          scheme = request.secure? ? URI::SQRL : URI::QRL
-          auth_url = SQRL::URL.create(scheme,
-            request.host+':'+request.port.to_s+'/sqrl',
-            {:nut => nut, :sfn => 'SQRL::Test'}).to_s
-          PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
-          erb :index, :locals => {
-            :auth_url => auth_url,
-            :qr => RQRCode::QRCode.new(auth_url, :size => 5, :level => :l),
-            :current_idk => SQRL::Base64.encode(current_idk),
-          }
+          if current_idk
+            erb :index_logged_in, :locals => {
+              :current_idk => SQRL::Base64.encode(current_idk),
+            }
+          else
+            nut = SQRL::OpaqueNut.new.to_s
+            scheme = request.secure? ? URI::SQRL : URI::QRL
+            auth_url = SQRL::URL.create(scheme,
+              request.host+':'+request.port.to_s+'/sqrl',
+              {:nut => nut, :sfn => 'SQRL::Test'}).to_s
+            PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
+            erb :index_logged_out, :locals => {
+              :auth_url => auth_url,
+              :qr => RQRCode::QRCode.new(auth_url, :size => 5, :level => :l),
+            }
+          end
         end
 
         post '/results' do
+          unless current_idk
+            status 401
+            redirect to('/')
+            return
+          end
+
           id = SecureRandom.urlsafe_base64
           ResultStore.save(id, {
             'waiting' => true,
