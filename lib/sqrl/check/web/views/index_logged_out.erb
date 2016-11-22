@@ -51,5 +51,25 @@
         </a>
       </div>
     </div>
+
+    <script>
+      var timeout = 2000
+      var poll = function() {
+        var req = new XMLHttpRequest()
+        req.onreadystatechange = function() {
+          if (this.readyState == 4) {
+            if (this.status == 204) {
+              location.reload()
+            } else {
+              timeout = timeout * 1.1;
+              setTimeout(poll, timeout)
+            }
+          }
+        }
+        req.open("GET", location.pathname + 'poll', true)
+        req.send()
+      }
+      poll()
+    </script>
   </body>
 </html>

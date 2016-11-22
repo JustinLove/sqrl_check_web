@@ -93,6 +93,14 @@ module SQRL
           redirect to('/')
         end
 
+        get '/poll' do
+          if current_idk
+            status 204
+          else
+            status 401
+          end
+        end
+
         post '/sqrl' do
           ss = SqrlServer.new(request)
           ss.execute
