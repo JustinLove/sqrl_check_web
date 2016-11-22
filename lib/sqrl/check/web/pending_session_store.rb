@@ -27,6 +27,10 @@ module SQRL
         def pending_idk(sid)
           Sidekiq.redis { |r| r.get("login:#{sid}") }
         end
+
+        def reset_session(sid)
+          Sidekiq.redis do |r| r.del("login:#{sid}") end
+        end
       end
     end
   end

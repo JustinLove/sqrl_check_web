@@ -3,7 +3,12 @@
     <title>SQRL::Check::Web</title>
   </head>
   <body>
-    <p><%= current_idk %></p>
+    <div>
+      <%= current_idk %>
+      <form method="post" action="/logout">
+        <input type="submit" value="log out">
+      </form>
+    </div>
     <div>
       <form method="post" action="/results">
         <div>

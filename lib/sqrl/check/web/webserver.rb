@@ -88,6 +88,11 @@ module SQRL
           end
         end
 
+        post '/logout' do
+          reset_session
+          redirect to('/')
+        end
+
         post '/sqrl' do
           ss = SqrlServer.new(request)
           ss.execute
@@ -101,6 +106,12 @@ module SQRL
 
         def current_idk
           session['idk'] ||= PendingSessionStore.pending_idk(session_id)
+        end
+
+        def reset_session
+          PendingSessionStore.reset_session(session_id)
+          session.delete('idk')
+          session.delete('id')
         end
       end
     end

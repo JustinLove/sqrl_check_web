@@ -25,5 +25,11 @@
     </div>
     <hr/>
     <p>Results are removed after one hour</p>
+    <div>
+      <%= current_idk %>
+      <form method="post" action="/logout">
+        <input type="submit" value="log out">
+      </form>
+    </div>
   </body>
 </html>
