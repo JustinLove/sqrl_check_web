@@ -93,6 +93,17 @@ module SQRL
           redirect to('/')
         end
 
+        get '/token/:token' do |token|
+          idk = PendingSessionStore.consume_token(token)
+          if idk
+            reset_session
+            session['idk'] = idk
+            redirect to('/')
+          else
+            status 404
+          end
+        end
+
         get '/poll' do
           if current_idk
             status 204

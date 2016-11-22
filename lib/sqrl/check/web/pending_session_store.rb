@@ -31,6 +31,21 @@ module SQRL
         def reset_session(sid)
           Sidekiq.redis do |r| r.del("login:#{sid}") end
         end
+
+        def generate_token(idk)
+          token = SecureRandom.urlsafe_base64
+          Sidekiq.redis do |r| r.setex("token:#{token}", 60*5, idk) end
+          token
+        end
+
+        def consume_token(token)
+          key = "token:#{token}"
+          Sidekiq.redis { |r|
+            value = r.get(key)
+            r.del(key)
+            value
+          }
+        end
       end
     end
   end
