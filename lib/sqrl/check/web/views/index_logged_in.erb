@@ -13,6 +13,28 @@
       <form method="post" action="/results">
         <div>
           <label for="target_url">
+            SQRL::Test demo server
+            <input type="text" size="40" id="target_url" name="target_url" value="https://sqrl-test.herokuapp.com/" readonly="readonly"/>
+          </label>
+        </div>
+        <input type="hidden" id="signed_cert" name="signed_cert" value="true"/>
+        <input type="submit" value="Run Demo">
+      </form>
+
+      <form method="post" action="/results">
+        <div>
+          <label for="target_url">
+            This server
+            <input type="text" size="40" id="target_url" name="target_url" value="<%= our_url %>" readonly="readonly"/>
+          </label>
+        </div>
+        <input type="hidden" id="signed_cert" name="signed_cert" value=""/>
+        <input type="submit" value="Run Demo">
+      </form>
+
+      <form method="post" action="/results">
+        <div>
+          <label for="target_url">
             HTML URL that contains nonced SQRL URL<br/>
             <input type="text" size="40" id="target_url" name="target_url" placeholder="https://"/>
           </label>
@@ -23,6 +45,7 @@
             Check TLS certificate signing chain
           </label>
         </div>
+        <p>Create <code><%= sample_path %></code> to permit this online analysis. The path must return a 2xx status code to proceed.</p>
         <input type="submit" value="Run">
       </form>
     </div>

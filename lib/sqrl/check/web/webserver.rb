@@ -25,7 +25,9 @@ module SQRL
         get '/' do
           if current_idk
             erb :index_logged_in, :locals => {
-              :current_idk => SQRL::Base64.encode(current_idk),
+              :current_idk => printable_idk,
+              :our_url => request.base_url,
+              :sample_path => allowed_url(''),
             }
           else
             nut = SQRL::OpaqueNut.new.to_s
@@ -55,7 +57,8 @@ module SQRL
           })
           TestWorker.perform_async(id, {
             :target_url => params[:target_url],
-            :signed_cert => !!params[:signed_cert]
+            :signed_cert => !!params[:signed_cert],
+            :allowed_url => allowed_url(params[:target_url]),
           })
           redirect to('/results/'+id)
         end
@@ -71,6 +74,7 @@ module SQRL
               erb :results, :locals => {
                 :target_url => results['target_url'],
                 :results => results,
+                :current_idk => printable_idk,
               }
             end
           else
@@ -119,12 +123,26 @@ module SQRL
           return ss.response_body
         end
 
+        get '/.well-known/sqrl_check_allowed/:idk' do |idk|
+          return 204
+        end
+
         def session_id
           session['id'] ||= SecureRandom.urlsafe_base64
         end
 
         def current_idk
           session['idk'] ||= PendingSessionStore.pending_idk(session_id)
+        end
+
+        def printable_idk
+          SQRL::Base64.encode(current_idk)
+        end
+
+        def allowed_url(target_url)
+          uri = URI(target_url)
+          uri.path = '/.well-known/sqrl_check_allowed/' + printable_idk
+          uri.to_s
         end
 
         def reset_session

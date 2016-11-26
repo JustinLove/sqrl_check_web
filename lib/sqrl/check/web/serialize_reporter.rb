@@ -28,6 +28,48 @@ module SQRL
             }
           }
         end
+
+        def self.exception(exception)
+          {
+            'total_time' => 0,
+            'count' => 1,
+            'failures' => 0,
+            'errors' => 1,
+            'skips' => 0,
+            'results' => [
+              {
+                'class_name' => exception.class.name,
+                'name' => exception.message,
+                'failures' => [
+                  {
+                    'description' => exception.backtrace.join("\n"),
+                  }
+                ]
+              }
+            ]
+          }
+        end
+
+        def self.precondition_failed(message, description)
+          {
+            'total_time' => 0,
+            'count' => 1,
+            'failures' => 0,
+            'errors' => 1,
+            'skips' => 0,
+            'results' => [
+              {
+                'class_name' => 'PreconditionFailed',
+                'name' => message,
+                'failures' => [
+                  {
+                    'description' => description,
+                  }
+                ]
+              }
+            ]
+          }
+        end
       end
     end
   end
