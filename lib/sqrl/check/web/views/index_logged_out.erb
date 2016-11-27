@@ -1,75 +1,48 @@
-<html>
-  <head>
-    <title>SQRL::Check::Web</title>
-    <style type="text/css">
-    table {
-      border-width: 0;
-      border-style: none;
-      border-color: #0000ff;
-      border-collapse: collapse;
-    }
-    td {
-      border-width: 0; 
-      border-style: none;
-      border-color: #0000ff; 
-      border-collapse: collapse; 
-      padding: 0; 
-      margin: 0; 
-      width: 5px; 
-      height: 5px; 
-    }
-    td.black { background-color: #000; }
-    td.white { background-color: #fff; }
-    </style>
-  </head>
-  <body>
-    <div>
-      <h2>About SQRL</h2>
-      <p>SQRL (pronounced squirrel) is a proposed authentication (login) method makes logging in as easy as scanning a QR code, while avoiding most of the pitfalls passwords.</p>
-      <ul>
-        <li><a href="http://sqrl.pl/">sqrl.pl</a> has some illustrated guides</li>
-        <li><a href="https://www.grc.com/sqrl/sqrl.htm">GRC</a> has the provisonal technical details</li>
-      </ul>
-      <h2>About this test server</h2>
-      <p>This service allows you to run a test suite against a publicly accessible SQRL server and view the results online. In order for this online test to proceed, we must first establish that you have control of the target site.</p>
-      <div>
-        <a href="<%= auth_url %>">
-        <h2>Login with SQRL to begin</h2>
-        <table>
-        <% qr.modules.each_index do |x| %>
-          <tr>
-          <% qr.modules.each_index do |y| %>
-           <% if qr.dark?(x,y) %>
-            <td class="black"/>
-           <% else %>
-            <td class="white"/>
-           <% end %>
-          <% end %>
-          </tr>
-        <% end %>
-        </table>
-        </a>
-      </div>
-    </div>
+<div>
+  <h2>About SQRL</h2>
+  <p>SQRL (pronounced squirrel) is a proposed authentication (login) method makes logging in as easy as scanning a QR code, while avoiding most of the pitfalls passwords.</p>
+  <ul>
+    <li><a href="http://sqrl.pl/">sqrl.pl</a> has some illustrated guides</li>
+    <li><a href="https://www.grc.com/sqrl/sqrl.htm">GRC</a> has the provisonal technical details</li>
+  </ul>
+  <h2>About this test server</h2>
+  <p>This service allows you to run a test suite against a publicly accessible SQRL server and view the results online. In order for this online test to proceed, we must first establish that you have control of the target site.</p>
+  <div>
+    <a href="<%= auth_url %>">
+    <h2>Login with SQRL to begin</h2>
+    <table>
+    <% qr.modules.each_index do |x| %>
+      <tr>
+      <% qr.modules.each_index do |y| %>
+       <% if qr.dark?(x,y) %>
+        <td class="black"/>
+       <% else %>
+        <td class="white"/>
+       <% end %>
+      <% end %>
+      </tr>
+    <% end %>
+    </table>
+    </a>
+  </div>
+</div>
 
-    <script>
-      var timeout = 2000
-      var poll = function() {
-        var req = new XMLHttpRequest()
-        req.onreadystatechange = function() {
-          if (this.readyState == 4) {
-            if (this.status == 204) {
-              location.reload()
-            } else {
-              timeout = timeout * 1.1;
-              setTimeout(poll, timeout)
-            }
-          }
+<script>
+  var timeout = 2000
+  var poll = function() {
+    var req = new XMLHttpRequest()
+    req.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        if (this.status == 204) {
+          location.reload()
+        } else {
+          timeout = timeout * 1.1;
+          setTimeout(poll, timeout)
         }
-        req.open("GET", location.pathname + 'poll', true)
-        req.send()
       }
-      poll()
-    </script>
-  </body>
-</html>
+    }
+    req.open("GET", location.pathname + 'poll', true)
+    req.send()
+  }
+  poll()
+</script>

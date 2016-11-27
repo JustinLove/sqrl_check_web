@@ -1,30 +1,20 @@
-<html>
-  <head>
-    <title>SQRL::Check::Web Waiting for Results</title>
-    <style>
-      .result .title { font-weight: normal; }
-    </style>
-  </head>
-  <body>
-    <h2><%= Rack::Utils.escape_html target_url %></h2>
-    <p id="waiting">Waiting.</p>
-    <script>
-      var poll = function() {
-        var req = new XMLHttpRequest()
-        req.onreadystatechange = function() {
-          if (this.readyState == 4) {
-            if (this.status == 204) {
-              location.reload()
-            } else {
-              setTimeout(poll, 1000)
-            }
-          }
+<h2><%= Rack::Utils.escape_html target_url %></h2>
+<p id="waiting">Waiting.</p>
+<script>
+  var poll = function() {
+    var req = new XMLHttpRequest()
+    req.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        if (this.status == 204) {
+          location.reload()
+        } else {
+          setTimeout(poll, 1000)
         }
-        req.open("GET", location.pathname + '/poll', true)
-        req.send()
-        document.getElementById('waiting').appendChild(new Text('.'))
       }
-      poll()
-    </script>
-  </body>
-</html>
+    }
+    req.open("GET", location.pathname + '/poll', true)
+    req.send()
+    document.getElementById('waiting').appendChild(new Text('.'))
+  }
+  poll()
+</script>

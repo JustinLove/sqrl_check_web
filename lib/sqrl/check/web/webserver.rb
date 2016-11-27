@@ -23,9 +23,9 @@ module SQRL
         end
 
         get '/' do
-          if current_idk
+          if logged_in?
             erb :index_logged_in, :locals => {
-              :current_idk => printable_idk,
+              :title => 'Select Target',
               :our_url => request.base_url,
               :sample_path => allowed_url(''),
             }
@@ -37,6 +37,7 @@ module SQRL
               {:nut => nut, :sfn => 'SQRL::Test'}).to_s
             PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
             erb :index_logged_out, :locals => {
+              :title => 'SQRL Server Tests',
               :auth_url => auth_url,
               :qr => RQRCode::QRCode.new(auth_url, :size => 5, :level => :l),
             }
@@ -44,7 +45,7 @@ module SQRL
         end
 
         post '/results' do
-          unless current_idk
+          unless logged_in?
             status 401
             redirect to('/')
             return
@@ -68,18 +69,21 @@ module SQRL
           if results
             if results['waiting']
               erb :results_waiting, :locals => {
+                :title => 'Waiting for Results',
                 :target_url => results['target_url'],
               }
             else
               erb :results, :locals => {
+                :title => 'Results',
                 :target_url => results['target_url'],
                 :results => results,
-                :current_idk => printable_idk,
               }
             end
           else
             status 404
-            erb :results_missing
+            erb :results_missing, :locals => {
+              :title => 'Results Missing',
+            }
           end
         end
 
@@ -109,7 +113,7 @@ module SQRL
         end
 
         get '/poll' do
-          if current_idk
+          if logged_in?
             status 204
           else
             status 401
@@ -137,6 +141,10 @@ module SQRL
 
         def printable_idk
           SQRL::Base64.encode(current_idk)
+        end
+
+        def logged_in?
+          !!current_idk
         end
 
         def allowed_url(target_url)
