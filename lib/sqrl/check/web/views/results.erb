@@ -6,19 +6,29 @@
     <span class="label label-warning"><%= results['errors'] %> errors</span>
     <span class="label label-info"><%= results['skips'] %> skipped</span>
   </p>
-  <ul class="results">
+
+  <div class="panel-group" role="tablist" id="results" aria-multiselectable="true">
     <% results['results'].each do |res| %>
-      <li class="result">
-        <h4 class="title">
-          <em class="class"><%= res['class_name'].sub('SQRL::Check::Server::', '') %></em>
-          <strong class="test"><%= res['name'].sub('test_', '').tr('_', ' ') %></strong>
+    <% id = (res['class_name'] + res['name']).gsub(/\W/, '_') %>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="heading-<%=id%>">
+        <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#results" href="#collapse-<%=id%>" aria-expanded="false" aria-controls="collapse-<%=id%>">
+            <em class="class"><%= res['class_name'].sub('SQRL::Check::Server::', '') %></em>
+            <strong class="test"><%= res['name'].sub('test_', '').tr('_', ' ') %></strong>
+          </a>
         </h4>
-        <% res['failures'].each do |test| %>
-         <pre class="error"><%= Rack::Utils.escape_html(test['description']) %></pre>
-        <% end %>
-      </li>
+      </div>
+      <div id="collapse-<%=id%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%=id%>">
+        <div class="panel-body">
+          <% res['failures'].each do |test| %>
+           <pre class="error"><%= Rack::Utils.escape_html(test['description']) %></pre>
+          <% end %>
+        </div>
+      </div>
+    </div>
     <% end %>
-  </ul>
+  </div>
 </div>
 <hr/>
 <footer>
