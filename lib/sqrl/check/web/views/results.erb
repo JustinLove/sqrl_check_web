@@ -1,6 +1,11 @@
-<h2><%= Rack::Utils.escape_html target_url %></h2>
 <div>
-  <p><%= results['total_time'].round(2) %>s: <%= results['count'] %> tests, <%= results['failures'] %> failed, <%= results['errors'] %> errors, <%= results['skips'] %> skipped </p>
+  <p>
+    <span class="label label-default"><%= results['total_time'].round(2) %>s</span>
+    <span class="label label-primary"><%= results['count'] %> tests</span>
+    <span class="label label-danger"><%= results['failures'] %> failed</span>
+    <span class="label label-warning"><%= results['errors'] %> errors</span>
+    <span class="label label-info"><%= results['skips'] %> skipped</span>
+  </p>
   <ul class="results">
     <% results['results'].each do |res| %>
       <li class="result">
@@ -16,4 +21,6 @@
   </ul>
 </div>
 <hr/>
-<p>Results are removed after one hour</p>
+<footer>
+  <p>Results are removed after one hour</p>
+</footer>

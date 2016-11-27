@@ -1,6 +1,17 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title>SQRL::Check::Web <%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <% if development? %>
+      <link rel="stylesheet" href="/css/bootstrap.css">
+      <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <% else %>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <% end %>
+
     <style type="text/css">
     .result .title { font-weight: normal; }
     table {
@@ -23,18 +34,30 @@
     td.white { background-color: #fff; }
     </style>
   </head>
-  <body>
-    <header>
+  <body class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <p class="navbar-brand">SQRL::Check</p>
+        <% if logged_in? %>
+        <form method="post" action="/logout" class="navbar-form navbar-right">
+          <input type="submit" value="log out" class="btn btn-default">
+        </form>
+        <p class="navbar-text navbar-right hidden-xs"><%= printable_idk %></p>
+        <% end %>
+      <div>
+    </nav>
+    <header class="page-header">
       <h1><%= title %></h1>
-      <% if logged_in? %>
-        <div>
-          <%= printable_idk %>
-          <form method="post" action="/logout">
-            <input type="submit" value="log out">
-          </form>
-        </div>
-      <% end %>
     </header>
+
     <%= yield %>
+
+    <% if development? %>
+      <script src="/js/jquery-3.1.1.js"></script>
+      <script src="/js/bootstrap.js"></script>
+    <% else %>
+      <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <% end %>
   </body>
 </html>

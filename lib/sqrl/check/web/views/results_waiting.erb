@@ -1,5 +1,4 @@
-<h2><%= Rack::Utils.escape_html target_url %></h2>
-<p id="waiting">Waiting.</p>
+<p id="waiting" class="alert alert-info" role="alert">Waiting.</p>
 <script>
   var poll = function() {
     var req = new XMLHttpRequest()

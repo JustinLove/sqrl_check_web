@@ -69,13 +69,11 @@ module SQRL
           if results
             if results['waiting']
               erb :results_waiting, :locals => {
-                :title => 'Waiting for Results',
-                :target_url => results['target_url'],
+                :title => 'Waiting for Results - ' + Rack::Utils.escape_html(results['target_url']),
               }
             else
               erb :results, :locals => {
-                :title => 'Results',
-                :target_url => results['target_url'],
+                :title => 'Results - ' + Rack::Utils.escape_html(results['target_url']),
                 :results => results,
               }
             end
@@ -145,6 +143,10 @@ module SQRL
 
         def logged_in?
           !!current_idk
+        end
+
+        def development?
+          request.host == 'localhost'
         end
 
         def allowed_url(target_url)

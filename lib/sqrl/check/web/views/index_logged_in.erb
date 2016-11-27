@@ -1,40 +1,68 @@
-<div>
-  <form method="post" action="/results">
-    <div>
-      <label for="target_url">
-        SQRL::Test demo server
-        <input type="text" size="40" id="target_url" name="target_url" value="https://sqrl-test.herokuapp.com/" readonly="readonly"/>
-      </label>
-    </div>
-    <input type="hidden" id="signed_cert" name="signed_cert" value="true"/>
-    <input type="submit" value="Run Demo">
-  </form>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form method="post" action="/results" class="form-horizontal">
+      <div class="form-group">
+        <label for="target_url_test" class="control-label col-sm-2">SQRL::Test server</label>
+        <div class="col-sm-4">
+          <input type="text" size="40" id="target_url_test" name="target_url" value="https://sqrl-test.herokuapp.com/" readonly="readonly" class="form-control"/>
+        </div>
+        <input type="hidden" id="signed_cert" name="signed_cert" value="true"/>
+        <div class="col-sm-6">
+          <input type="submit" value="Run Demo" class="btn btn-default">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-  <form method="post" action="/results">
-    <div>
-      <label for="target_url">
-        This server
-        <input type="text" size="40" id="target_url" name="target_url" value="<%= our_url %>" readonly="readonly"/>
-      </label>
-    </div>
-    <input type="hidden" id="signed_cert" name="signed_cert" value=""/>
-    <input type="submit" value="Run Demo">
-  </form>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form method="post" action="/results" class="form-horizontal">
+      <div class="form-group">
+        <label for="target_url_self" class="control-label col-sm-2">This server</label>
+        <div class="col-sm-4">
+          <input type="text" size="40" id="target_url_self" name="target_url" value="<%= our_url %>" readonly="readonly" class="form-control"/>
+        </div>
+        <input type="hidden" id="signed_cert" name="signed_cert" value="true"/>
+        <div class="col-sm-6">
+          <input type="submit" value="Run Demo" class="btn btn-default">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-  <form method="post" action="/results">
-    <div>
-      <label for="target_url">
-        HTML URL that contains nonced SQRL URL<br/>
-        <input type="text" size="40" id="target_url" name="target_url" placeholder="https://"/>
-      </label>
-    </div>
-    <div>
-      <label for="signed_cert">
-        <input type="checkbox" id="signed_cert" name="signed_cert"/>
-        Check TLS certificate signing chain
-      </label>
-    </div>
-    <p>Create <code><%= sample_path %></code> to permit this online analysis. The path must return a 2xx status code to proceed.</p>
-    <input type="submit" value="Run">
-  </form>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form method="post" action="/results" class="form-horizontal">
+      <div class="form-group">
+        <label for="target_url" class="control-label col-sm-2">Target Url</label>
+        <div class="col-sm-10">
+          <input type="text" size="40" id="target_url" name="target_url" placeholder="https://" class="form-control"/>
+          <p class="help-block">HTML URL that contains nonced SQRL URL</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label for="signed_cert" class="control-label">
+              <input type="checkbox" id="signed_cert" name="signed_cert"/>
+              Check TLS certificate signing chain
+            </label>
+            <p class="help-block">Leave off for self-signed certs</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <p class="help-block">Create <code><%= sample_path %></code> to permit this online analysis. The path must return a 2xx status code to proceed.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="submit" value="Run" class="btn btn-default">
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
