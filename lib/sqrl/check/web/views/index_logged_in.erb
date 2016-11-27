@@ -1,8 +1,47 @@
 <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Target Server</h3>
+  </div>
+  <div class="panel-body">
+    <p>Create <code><%= sample_path %></code> to permit this online analysis. The path must return a 2xx status code to proceed.</p>
+    <p>The tests will create numerous anonymous identities. If you wish to tag identities for cleanup, the test client will identify it's agent as <code>SQRL/1 SQRL::Check/<var>version</var></code> for SQRL requests and <code>SQRL::Check/<var>version</var></code> for plain HTTP requests. Feedback is welcome on possible SQRL options etc. that could be used to tag test accounts.</p>
+
+    <form method="post" action="/results" class="form-horizontal">
+      <div class="form-group">
+        <label for="target_url" class="control-label col-sm-2">Target Url</label>
+        <div class="col-sm-10">
+          <input type="text" size="40" id="target_url" name="target_url" placeholder="https://" class="form-control" aria-describedby="target_url_html"/>
+          <p class="help-block" id="target_url_html">HTML URL that contains nonced SQRL URL</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label for="signed_cert" class="control-label">
+              <input type="checkbox" id="signed_cert" name="signed_cert" aria-describedby="self_signed"/>
+              Check TLS certificate signing chain
+            </label>
+            <p class="help-block" id="self_signed">Leave off for self-signed certs</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="submit" value="Run" class="btn btn-default">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">SQRL::Test demo server</h3>
+  </div>
   <div class="panel-body">
     <form method="post" action="/results" class="form-horizontal">
       <div class="form-group">
-        <label for="target_url_test" class="control-label col-sm-2">SQRL::Test server</label>
+        <label for="target_url_test" class="control-label col-sm-2">Demo URL</label>
         <div class="col-sm-4">
           <input type="text" size="40" id="target_url_test" name="target_url" value="https://sqrl-test.herokuapp.com/" readonly="readonly" class="form-control"/>
         </div>
@@ -16,12 +55,16 @@
 </div>
 
 <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">This server</h3>
+  </div>
   <div class="panel-body">
     <form method="post" action="/results" class="form-horizontal">
       <div class="form-group">
-        <label for="target_url_self" class="control-label col-sm-2">This server</label>
+        <label for="target_url_self" class="control-label col-sm-2">Demo URL</label>
         <div class="col-sm-4">
           <input type="text" size="40" id="target_url_self" name="target_url" value="<%= our_url %>" readonly="readonly" class="form-control"/>
+          <p class="help-block">Uses only browser session auth, persistence tests expected to fail.</p>
         </div>
         <input type="hidden" id="signed_cert" name="signed_cert" value="true"/>
         <div class="col-sm-6">
@@ -32,37 +75,3 @@
   </div>
 </div>
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    <form method="post" action="/results" class="form-horizontal">
-      <div class="form-group">
-        <label for="target_url" class="control-label col-sm-2">Target Url</label>
-        <div class="col-sm-10">
-          <input type="text" size="40" id="target_url" name="target_url" placeholder="https://" class="form-control"/>
-          <p class="help-block">HTML URL that contains nonced SQRL URL</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label for="signed_cert" class="control-label">
-              <input type="checkbox" id="signed_cert" name="signed_cert"/>
-              Check TLS certificate signing chain
-            </label>
-            <p class="help-block">Leave off for self-signed certs</p>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <p class="help-block">Create <code><%= sample_path %></code> to permit this online analysis. The path must return a 2xx status code to proceed.</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <input type="submit" value="Run" class="btn btn-default">
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
