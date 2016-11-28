@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "sidekiq", "~> 4.2"
   spec.add_runtime_dependency "redis", "~> 3.3"
   spec.add_runtime_dependency "rqrcode"
+  spec.add_runtime_dependency "autoscaler", "~> 0.12"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
