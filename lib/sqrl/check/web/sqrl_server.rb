@@ -96,7 +96,9 @@ module SQRL
         end
 
         def fields
-          f = {}
+          f = {
+            'qry' => '/sqrl',
+          }
           if sqrl_request.opt?('cps') && !sqrl_request.commands.include?('query')
             token = PendingSessionStore.generate_token(sqrl_request.idk)
             f['url'] = "#{web_request.base_url}/token/#{token}"

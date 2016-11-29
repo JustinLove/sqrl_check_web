@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/JustinLove/sqrl_check.git
-  revision: c1602668e207c6b31fd209a1022b566366bc4405
+  revision: 9daf41c08b768aab6f49220b0d0d21ce52b2872d
   branch: master
   specs:
     sqrl_check (0.0.1)
