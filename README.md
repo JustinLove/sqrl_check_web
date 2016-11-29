@@ -12,9 +12,10 @@ Depends on Redis and libsodium
 ## Heroku installation
 
    herkou apps:create
-   heroku buildpacks:add --index 1 "https://github.com/JustinLove/heroku-buildpack-libsodium.git"
    heroku addons:create heroku-redis:hobby-dev
    # or other Redis provider
+   heroku buildpacks:add --index 1 "https://github.com/JustinLove/heroku-buildpack-libsodium.git"
+   heroku buildpacks:add --index 2 heroku/ruby
    heroku config:set SESSION_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    heroku config:set HEROKU_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    heroku config:set HEROKU_APP=xxxxxxxxxx
