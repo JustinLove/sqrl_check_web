@@ -34,7 +34,7 @@ module SQRL
             scheme = request.secure? ? URI::SQRL : URI::QRL
             auth_url = SQRL::URL.create(scheme,
               request.host+':'+request.port.to_s+'/sqrl',
-              {:nut => nut, :sfn => 'SQRL::Test'}).to_s
+              {:nut => nut, :sfn => 'SQRL::Check'}).to_s
             PendingSessionStore.sending(auth_url, {:sid => session_id, :ip => request.ip})
             erb :index_logged_out, :locals => {
               :title => 'SQRL Server Tests',
